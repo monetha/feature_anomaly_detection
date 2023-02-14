@@ -11,5 +11,5 @@ SLICE      - batch size in sessions  <br />
 BEG_DATE   - begin date of timeframe <br />
 END_DATE   - end date of timeframe <br />
 LQ         - left quantile aka bottom border for anomalies <br />
-RQ         - right quantile aka top border for anomalies
-to_sql     - option to export result to db
+RQ         - right quantile aka top border for anomalies <br />
+to_sql (not safe yet)    - option to export result to db
