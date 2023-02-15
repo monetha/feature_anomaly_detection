@@ -1,5 +1,6 @@
 # feature_anomaly_detection
-Purpose: to search and count anomalies in feature correlations for shops
+Purpose: to search and count anomalies in feature correlations for shops <br />
+Path on DS-instance: /home/ubuntu/DusFolder/anomaly_research/fea_conv/feature_anomaly_detection
 
 ## how to run main code
 change parameters in conv_config.py and run eshop_anomaly_count.py
