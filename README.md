@@ -13,4 +13,5 @@ BEG_DATE   - begin date of timeframe <br />
 END_DATE   - end date of timeframe <br />
 LQ         - left quantile aka bottom border for anomalies <br />
 RQ         - right quantile aka top border for anomalies <br />
-to_sql (not safe yet)    - option to export result to db
+--to_sql   - key to export result to db <br />
+--no_sql   - key to not export result to db (default)
