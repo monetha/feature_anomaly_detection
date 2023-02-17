@@ -62,7 +62,7 @@ parser = argparse.ArgumentParser()
 # parser.add_argument('--to_sql', type=bool, required=False, default=False)
 parser.add_argument('--to_sql', action='store_true')
 parser.add_argument('--no_sql', dest='to_sql', action='store_false')
-parser.set_defaults(to_sql=True)
+parser.set_defaults(to_sql=False)
 args = parser.parse_args()
 args = parser.parse_args()
 
