@@ -59,7 +59,11 @@ parser = argparse.ArgumentParser()
 # parser.add_argument('--end_date', type=str, required=True)
 # parser.add_argument('--lq', type=int, required=True)
 # parser.add_argument('--rq', type=int, required=True)
-parser.add_argument('--to_sql', type=bool, required=False, default=False)
+# parser.add_argument('--to_sql', type=bool, required=False, default=False)
+parser.add_argument('--to_sql', action='store_true')
+parser.add_argument('--no_sql', dest='to_sql', action='store_false')
+parser.set_defaults(to_sql=True)
+args = parser.parse_args()
 args = parser.parse_args()
 
 # ACCOUNT_ID = args.account_id
@@ -446,6 +450,7 @@ for d in data:
 
 k1 = pd.DataFrame(k, columns=['period']).value_counts().reset_index().rename(columns={0: 'counts'})
 k1['counts'] = k1['counts'] / 2
+k1['account_id'] = ACCOUNT_ID
 k1['batch_size'] = SLICE
 k1['feature_len'] = l
 k1 = k1.sort_values('period')
@@ -463,7 +468,7 @@ if to_sql == True:
     port1 = os.getenv('DATA_DB_PORT')
 
     connection_str1 = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(user1, password1, host1, port1, db1)
-    engine1 = sqlalchemy.create_engine(connection_str1, execution_options={"stream_results":True})
+    engine1 = sqlalchemy.create_engine(connection_str1)
     
     k1.to_sql(name='feature_anomaly_batch_counts', con=engine1, schema='data', if_exists='append')
 
