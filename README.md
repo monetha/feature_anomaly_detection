@@ -26,7 +26,10 @@ batch_counts.csv (sql data.feature_anomaly_batch_counts) <br />
 <br />
 eshop_anomaly_kpi.py : <br />
 anomaly_table.csv (sql data.eshop_anomaly_table) <br />
+for each KPI in ['bounce_rate', 'conversion_rate', 'med_duration'] anomalies were identified both in general and with division by channels <br />
 metric_lines.csv <br />
+attribute // threshold from below // threshold from above - quantiles on a given dataset <br />
 tops_kpi.csv (sql data.eshop_anomaly_tops_kpi) <br />
+for each Source the best combination of MCID for each of the 3 KPI is derived <br />
 
 
