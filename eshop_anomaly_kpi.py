@@ -158,84 +158,85 @@ sessions = sessions.merge(sessions1[['id', 'journey_status_id', 'created', 'stat
 
 chanls = ['Organic Search', 'Social', 'Direct', 'Referral', 'Email', 'Paid Search']
 
-data2 = []
+data_tables = []
 now = BEG_DATE + timedelta(days=1)
 then = now + timedelta(days=31)
 window_dates = []
 
 for dt in rrule.rrule(rrule.HOURLY, dtstart=now, until=then):
     row = sessions[(sessions['session_start'] > dt - timedelta(days=1)) & (sessions['session_start'] <= dt)]
-    data2.append(row)
+    data_tables.append(row)
     window_dates.append([dt - timedelta(days=1), dt])
     
 
-atable = pd.DataFrame(columns=['period', 'period_len', 'period_begin', 'period_end', 'first_session', 'last_session',
+anomaly_table = pd.DataFrame(columns=['period', 'period_len', 'period_begin', 'period_end', 
+                                      'first_session', 'last_session',
                                'bounce_rate', 'conversion_rate', 'med_duration',
                                'bounce_organic', 'bounce_social', 'bounce_direct', 'bounce_referral', 'bounce_email',
                                'bounce_paid','conversion_organic', 'conversion_social', 'conversion_direct',
                                'conversion_referral', 'conversion_email', 'conversion_paid',
                                'duration_organic', 'duration_social', 'duration_direct', 'duration_referral',
                                'duration_email', 'duration_paid'], 
-                      index=[i for i in range(0, len(data2))])
+                      index=[i for i in range(0, len(data_tables))])
 
 per = 0
-for sch in data2:
-    atable.iloc[per, atable.columns.get_loc('period')] = per
-    atable.iloc[per, atable.columns.get_loc('first_session')] = sch.session_start.min()
-    atable.iloc[per, atable.columns.get_loc('last_session')] = sch.session_start.max()
-    le = len(sch)
-    bounc = len(sch[sch.status_name == 'Bounce'])
+for table in data_tables:
+    anomaly_table.iloc[per, anomaly_table.columns.get_loc('period')] = per
+    anomaly_table.iloc[per, anomaly_table.columns.get_loc('first_session')] = table.session_start.min()
+    anomaly_table.iloc[per, anomaly_table.columns.get_loc('last_session')] = table.session_start.max()
+    le = len(table)
+    bounc = len(table[table.status_name == 'Bounce'])
     if le == 0:
-        atable.iloc[per, atable.columns.get_loc('bounce_rate')] = 0
+        anomaly_table.iloc[per, anomaly_table.columns.get_loc('bounce_rate')] = 0
     else:
-        atable.iloc[per, atable.columns.get_loc('bounce_rate')] = bounc/le
-    atb = len(sch[sch.add_to_basket_count >= 1])
+        anomaly_table.iloc[per, anomaly_table.columns.get_loc('bounce_rate')] = bounc/le
+    atb = len(table[table.add_to_basket_count >= 1])
     if le == 0:
-        atable.iloc[per, atable.columns.get_loc('conversion_rate')] = 0
+        anomaly_table.iloc[per, anomaly_table.columns.get_loc('conversion_rate')] = 0
     else:
-        atable.iloc[per, atable.columns.get_loc('conversion_rate')] = atb/le
-    atable.iloc[per, atable.columns.get_loc('med_duration')] = sch.duration.median()
-    atable.iloc[per, atable.columns.get_loc('period_len')] = len(sch)
-    atable.iloc[per, atable.columns.get_loc('period_begin')] = window_dates[per][0]
-    atable.iloc[per, atable.columns.get_loc('period_end')] = window_dates[per][1]
+        anomaly_table.iloc[per, anomaly_table.columns.get_loc('conversion_rate')] = atb/le
+    anomaly_table.iloc[per, anomaly_table.columns.get_loc('med_duration')] = table.duration.median()
+    anomaly_table.iloc[per, anomaly_table.columns.get_loc('period_len')] = len(table)
+    anomaly_table.iloc[per, anomaly_table.columns.get_loc('period_begin')] = window_dates[per][0]
+    anomaly_table.iloc[per, anomaly_table.columns.get_loc('period_end')] = window_dates[per][1]
     
     per += 1
 
-ch = ['organic', 'social', 'direct', 'referral', 'email', 'paid']
-for n in ch:
+channel_shorts = ['organic', 'social', 'direct', 'referral', 'email', 'paid']
+for n in channel_shorts:
     per = 0
-    for sch in data2:
-        if n == ch[0]:
-            cat = sch[sch.channel == 'Organic Search']
-        elif n == ch[1]:
-            cat = sch[sch.channel == 'Social']
-        elif n == ch[2]:
-            cat = sch[sch.channel == 'Direct']
-        elif n == ch[3]:
-            cat = sch[sch.channel == 'Referral']
-        elif n == ch[4]:
-            cat = sch[sch.channel == 'Email']
-        elif n == ch[5]:
-            cat = sch[sch.channel == 'Paid Search']
+    for table in data_tables:
+        if n == channel_shorts[0]:
+            cat = table[table.channel == 'Organic Search']
+        elif n == channel_shorts[1]:
+            cat = table[table.channel == 'Social']
+        elif n == channel_shorts[2]:
+            cat = table[table.channel == 'Direct']
+        elif n == channel_shorts[3]:
+            cat = table[table.channel == 'Referral']
+        elif n == channel_shorts[4]:
+            cat = table[table.channel == 'Email']
+        elif n == channel_shorts[5]:
+            cat = table[table.channel == 'Paid Search']
         le = len(cat)
         bounc = len(cat[cat.status_name == 'Bounce'])
         try:
-            atable.iloc[per, atable.columns.get_loc('bounce_{0}'.format(n))] = bounc/le
+            anomaly_table.iloc[per, anomaly_table.columns.get_loc('bounce_{0}'.format(n))] = bounc/le
         except ZeroDivisionError:
-            atable.iloc[per, atable.columns.get_loc('bounce_{0}'.format(n))] = 0
+            anomaly_table.iloc[per, anomaly_table.columns.get_loc('bounce_{0}'.format(n))] = 0
         atb = len(cat[cat.add_to_basket_count >= 1])
         try:
-            atable.iloc[per, atable.columns.get_loc('conversion_{0}'.format(n))] = atb/le
+            anomaly_table.iloc[per, anomaly_table.columns.get_loc('conversion_{0}'.format(n))] = atb/le
         except ZeroDivisionError:
-            atable.iloc[per, atable.columns.get_loc('conversion_{0}'.format(n))] = 0
+            anomaly_table.iloc[per, anomaly_table.columns.get_loc('conversion_{0}'.format(n))] = 0
             
         if cat.duration.sum() != 0:   
             try:
-                atable.iloc[per, atable.columns.get_loc('duration_{0}'.format(n))] = cat.duration.median()
+                anomaly_table.iloc[per, anomaly_table.columns.get_loc('duration_{0}'.format(n))] = cat.duration.median()
             except ZeroDivisionError:
-                atable.iloc[per, atable.columns.get_loc('duration_{0}'.format(n))] = 0
+                anomaly_table.iloc[per, anomaly_table.columns.get_loc('duration_{0}'.format(n))] = 0
         else:
-            atable.iloc[per, atable.columns.get_loc('duration_{0}'.format(n))] = 0
+            anomaly_table.iloc[per, anomaly_table.columns.get_loc('duration_{0}'.format(n))] = 0
         
         per += 1
         
@@ -249,10 +250,10 @@ metlist = ['bounce_rate', 'conversion_rate', 'med_duration', 'bounce_organic', '
 qframe = pd.DataFrame(columns=['metric', 'bot_line', 'upp_line'], index=[i for i in range(0, len(metlist))])
 metn = 0
 for n in metlist:
-    atable['an_{}'.format(n)] = 0
-    q95 = np.quantile(atable[n], RQ)
-    q05 = np.quantile(atable[n], LQ)
-    atable.loc[(atable[n] > q95) | (atable[n] < q05), 'an_{}'.format(n)] = 1
+    anomaly_table['an_{}'.format(n)] = 0
+    q95 = np.quantile(anomaly_table[n], RQ)
+    q05 = np.quantile(anomaly_table[n], LQ)
+    anomaly_table.loc[(anomaly_table[n] > q95) | (anomaly_table[n] < q05), 'an_{}'.format(n)] = 1
     qframe.iloc[metn, qframe.columns.get_loc('metric')] = n
     qframe.iloc[metn, qframe.columns.get_loc('bot_line')] = q05
     qframe.iloc[metn, qframe.columns.get_loc('upp_line')] = q95
@@ -262,9 +263,9 @@ for n in metlist:
 # qframe.to_csv('metric_lines_{0}_{1}_{2}.csv'.format(ACCOUNT_ID, BEG_DATE, END_DATE))
 qframe.to_csv('metric_lines.csv')
 
-atable['anomaly_coeff']= atable.iloc[:, -21:-1].sum(axis=1)
-# atable.to_csv('anomaly_table_{0}_{1}_{2}.csv'.format(ACCOUNT_ID, BEG_DATE, END_DATE))
-atable.to_csv('anomaly_table.csv')
+anomaly_table['anomaly_coeff']= anomaly_table.iloc[:, -21:-1].sum(axis=1)
+# anomaly_table.to_csv('anomaly_table_{0}_{1}_{2}.csv'.format(ACCOUNT_ID, BEG_DATE, END_DATE))
+anomaly_table.to_csv('anomaly_table.csv')
 
 #-----------------------------------
 
@@ -275,28 +276,28 @@ print('Step 2...')
 TIME_END = time.time()
 print('Time spent: ', TIME_END - TIME)
 
-sort_data = (atable[atable['anomaly_coeff'] > 0].index.tolist())
+sort_data = (anomaly_table[anomaly_table['anomaly_coeff'] > 0].index.tolist())
 
-data3 = []
+data_tables_an_found = []
 for i in sort_data:
-    data3.append(data2[i])
+    data_tables_an_found.append(data_tables[i])
 
 
 smcid = [['source_id', 'medium_id', 'campaign_id', 'ipcountry', 'device_family']]
 kpiv = ['add_to_basket_count', 'duration', 'status_name']
 
-big_table = pd.DataFrame()
+tops_table = pd.DataFrame()
 period_number = 0
 
 print('It might take longer...')
 
-pbar = tqdm.tqdm(total=len(data3))
+pbar = tqdm.tqdm(total=len(data_tables_an_found))
 
-for sess in data3:
+for sess in data_tables_an_found:
     period_number += 1
-    sliced = sess[['source', 'medium', 'campaign', 'ipcountry', 'device_family', 'add_to_basket_count',
+    sliced_sessions_data = sess[['source', 'medium', 'campaign', 'ipcountry', 'device_family', 'add_to_basket_count',
                        'duration', 'status_name']]
-    combs = sliced.groupby(['source', 'medium', 'campaign', 'ipcountry',
+    combs = sliced_sessions_data.groupby(['source', 'medium', 'campaign', 'ipcountry',
                             'device_family']).size().reset_index().rename(columns={0: 'length'})
     
     combs['bounce_rate'] = 0
@@ -307,9 +308,11 @@ for sess in data3:
 
     for index, row in combs.iterrows():
 
-        cuts = sliced[(sliced.source == row.source) & (sliced.medium == row.medium) & 
-                      (sliced.campaign == row.campaign) & (sliced.ipcountry == row.ipcountry) &
-                      (sliced.device_family == row.device_family)]
+        cuts = sliced_sessions_data[(sliced_sessions_data.source == row.source) & 
+                                    (sliced_sessions_data.medium == row.medium) & 
+                                    (sliced_sessions_data.campaign == row.campaign) & 
+                                    (sliced_sessions_data.ipcountry == row.ipcountry) &
+                                    (sliced_sessions_data.device_family == row.device_family)]
 
         bounc = len(cuts[cuts.status_name == 'Bounce'])
         atb = len(cuts[cuts.add_to_basket_count >= 1])
@@ -342,8 +345,7 @@ for sess in data3:
         rown += 1
     
     combs = combs[combs.length >= 10].reset_index(drop=True)
-    cgr = combs.groupby(['source', 'medium', 'campaign', 'ipcountry', 'device_family']).size()
-    norms = sliced.groupby(['source']).size().reset_index().rename(columns={0: 'length'})
+    norms = sliced_sessions_data.groupby(['source']).size().reset_index().rename(columns={0: 'length'})
     norms = norms[norms['source'].isin(combs.source.unique().tolist())].reset_index(drop=True)
     norms['bounce_rate'] = 0
     norms['conversion_rate'] = 0
@@ -353,7 +355,7 @@ for sess in data3:
 
     for index, row in norms.iterrows():
 
-        cuts = sliced[(sliced.source == row.source)]
+        cuts = sliced_sessions_data[(sliced_sessions_data.source == row.source)]
 
         bounc = len(cuts[cuts.status_name == 'Bounce'])
         atb = len(cuts[cuts.add_to_basket_count >= 1])
@@ -391,15 +393,15 @@ for sess in data3:
 
     for sou in norms.source:
 
-        cot = combs[combs.source == sou]
+        category_slice = combs[combs.source == sou]
         norm = norms[norms.source == sou]
 
         for i in range(0, len(kpi)):
             val = kpi[i]
             if val == 'bounce_rate':
-                cut = cot.sort_values(val, ascending=True).head(1)
+                cut = category_slice.sort_values(val, ascending=True).head(1)
             else:
-                cut = cot.sort_values(val, ascending=False).head(1)
+                cut = category_slice.sort_values(val, ascending=False).head(1)
             cut['target_kpi'] = val
             cut['kpi_value'] = cut[val]
             cut['kpi_norma'] = norm[val].iloc[0]
@@ -412,15 +414,15 @@ for sess in data3:
     tops['last_session'] = sess['session_start'].max()
     tops['overall_begin'] = BEG_DATE
     tops['overall_end'] = END_DATE
-    big_table = big_table.append(tops)
+    tops_table = tops_table.append(tops)
     
     pbar.update(1)
 
 pbar.close()
 
-big_table = big_table.reset_index(drop=True)
-# big_table.to_csv('tops_kpi_{0}_{1}_{2}.csv'.format(ACCOUNT_ID, BEG_DATE, END_DATE))
-big_table.to_csv('tops_kpi.csv')
+tops_table = tops_table.reset_index(drop=True)
+# tops_table.to_csv('tops_kpi_{0}_{1}_{2}.csv'.format(ACCOUNT_ID, BEG_DATE, END_DATE))
+tops_table.to_csv('tops_kpi.csv')
 
 if to_sql == True:
     
@@ -433,8 +435,8 @@ if to_sql == True:
     connection_str1 = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(user1, password1, host1, port1, db1)
     engine1 = sqlalchemy.create_engine(connection_str1)
     
-    big_table.to_sql(name='eshop_anomaly_tops_kpi', con=engine1, schema='data', if_exists='append')
-    atable.to_sql(name='eshop_anomaly_table', con=engine1, schema='data', if_exists='append')
+    tops_table.to_sql(name='eshop_anomaly_tops_kpi', con=engine1, schema='data', if_exists='append')
+    anomaly_table.to_sql(name='eshop_anomaly_table', con=engine1, schema='data', if_exists='append')
 
 # timestamp
 print('Core procession is finished...')
