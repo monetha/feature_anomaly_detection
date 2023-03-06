@@ -65,6 +65,7 @@ BEG_DATE = datetime.datetime.strptime(BEG_DATE, '%Y-%m-%d').date() - timedelta(d
 END_DATE = datetime.datetime.strptime(END_DATE, '%Y-%m-%d').date()
 LQ = LQ/100
 RQ = RQ/100
+anomaly_border = AN_BORD
 
 print('Arguments accepted', 
       '\n Acc_id: ', ACCOUNT_ID,  
@@ -72,6 +73,7 @@ print('Arguments accepted',
       '\n E_date:', END_DATE,
       '\n lq: ', LQ,
       '\n rq: ', RQ,
+      '\n anomaly_border: ', anomaly_border,
       '\n to_sql: ', to_sql,
       '\nCurrent time: ', TIME)
 
@@ -276,7 +278,7 @@ print('Step 2...')
 TIME_END = time.time()
 print('Time spent: ', TIME_END - TIME)
 
-sort_data = (anomaly_table[anomaly_table['anomaly_coeff'] > 0].index.tolist())
+sort_data = (anomaly_table[anomaly_table['anomaly_coeff'] >= anomaly_border].index.tolist())
 
 data_tables_an_found = []
 for i in sort_data:
