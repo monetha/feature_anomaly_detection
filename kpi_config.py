@@ -3,4 +3,4 @@ BEG_DATE = '2023-01-01'
 END_DATE = '2023-01-10'
 LQ = 5 
 RQ = 95
-an_bord = 5
+AN_BORD = 5
