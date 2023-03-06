@@ -15,6 +15,7 @@ BEG_DATE   - begin date of timeframe <br />
 END_DATE   - end date of timeframe <br />
 LQ         - left quantile aka bottom border for anomalies <br />
 RQ         - right quantile aka top border for anomalies <br />
+AN_BORD    - minimum border for anomaly count to select for tops_kpi (for eshop_anomaly_kpi only) <br />
 --to_sql   - key to export result to db <br />
 --no_sql   - key to not export result to db (default) <br />
 
