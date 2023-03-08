@@ -36,5 +36,5 @@ attribute // threshold from below // threshold from above - quantiles on a given
 #### tops_kpi.csv (sql data.eshop_anomaly_tops_kpi) <br />
 for each Source the best combination of MCID for each of the 3 KPI is derived. main condition is for combination of MCID to have more than 10 sessions for each source. second condition is for each source to have 3+ alternative MCID  <br />
 #### cache_log.txt <br />
-results from tops_kpi.csv in text representation with initial parameters <br />
+results from tops_kpi.csv for last day in text representation with initial parameters <br />
 

@@ -423,23 +423,6 @@ for sess in data_tables_an_found:
 
 pbar.close()
 
-with open('cache_log.txt', 'w', encoding='utf-8') as f:
-    f.write('Results with specs: \n')
-    f.write( 
-      'Acc_id: {0} \n B_date: {1} \n E_date: {2} \n lq: {3} \n rq: {4} \n anomaly_border: {5} \n'.format(
-          ACCOUNT_ID,  
-          BEG_DATE,
-          END_DATE,
-          LQ,
-          RQ,
-          anomaly_border))
-    for index, row in tops_table.iterrows():
-        if row.kpi_value == row.kpi_norma:
-            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.first_session, row.last_session, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, row.kpi_value, row.kpi_norma))
-        else:
-            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.first_session, row.last_session, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, row.kpi_value, row.kpi_delta, row.kpi_norma))
-        f.write('\n')
-
 tops_table = tops_table.reset_index(drop=True)
 # tops_table.to_csv('tops_kpi_{0}_{1}_{2}.csv'.format(ACCOUNT_ID, BEG_DATE, END_DATE))
 tops_table.to_csv('tops_kpi.csv')
@@ -458,6 +441,28 @@ if to_sql == True:
     tops_table.to_sql(name='eshop_anomaly_tops_kpi', con=engine1, schema='data', if_exists='append')
     anomaly_table.to_sql(name='eshop_anomaly_table', con=engine1, schema='data', if_exists='append')
 
+# tops_table['last_session_date'] = tops_table['last_session']
+# tops_table['last_session_date'] = tops_table['last_session'].apply(lambda x: x.date())
+# tops_table['last_session_date'] = tops_table['last_session'].max()
+
+with open('cache_log.txt', 'w', encoding='utf-8') as f:
+    f.write('Results with specs: \n')
+    f.write( 
+      'Acc_id: {0} \n B_date: {1} \n E_date: {2} \n lq: {3} \n rq: {4} \n anomaly_border: {5} \n\n'.format(
+          ACCOUNT_ID,  
+          BEG_DATE,
+          END_DATE,
+          LQ,
+          RQ,
+          anomaly_border))
+    for index, row in tops_table[tops_table['first_session'] >= 
+                                 tops_table['overall_end'] - timedelta(days=1)].iterrows():
+        if row.kpi_value == row.kpi_norma:
+            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.first_session, row.last_session, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_norma, 2)))
+        else:
+            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.first_session, row.last_session, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
+        f.write('\n\n')
+        
 # timestamp
 print('Core procession is finished...')
 TIME_END = time.time()
