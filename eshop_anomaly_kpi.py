@@ -162,13 +162,18 @@ chanls = ['Organic Search', 'Social', 'Direct', 'Referral', 'Email', 'Paid Searc
 
 data_tables = []
 now = BEG_DATE + timedelta(days=1)
-then = now + timedelta(days=31)
+then = END_DATE
 window_dates = []
 
+per0 = 0
 for dt in rrule.rrule(rrule.HOURLY, dtstart=now, until=then):
     row = sessions[(sessions['session_start'] > dt - timedelta(days=1)) & (sessions['session_start'] <= dt)]
-    data_tables.append(row)
     window_dates.append([dt - timedelta(days=1), dt])
+    row['period_begin'] = window_dates[per0][0]
+    row['period_end'] = window_dates[per0][1]
+    data_tables.append(row)
+    
+    per0 += 1
     
 
 anomaly_table = pd.DataFrame(columns=['period', 'period_len', 'period_begin', 'period_end', 
@@ -415,6 +420,8 @@ for sess in data_tables_an_found:
     tops['period_number'] = period_number
     tops['first_session'] = sess['session_start'].min()
     tops['last_session'] = sess['session_start'].max()
+    tops['period_begin'] = sess['period_begin'].max()
+    tops['period_end'] = sess['period_end'].max()
     tops['overall_begin'] = BEG_DATE
     tops['overall_end'] = END_DATE
     tops_table = tops_table.append(tops)
@@ -455,14 +462,30 @@ with open('cache_log.txt', 'w', encoding='utf-8') as f:
           LQ,
           RQ,
           anomaly_border))
-    for index, row in tops_table[tops_table['first_session'] >= 
-                                 tops_table['overall_end'] - timedelta(days=1)].iterrows():
-        if row.kpi_value == row.kpi_norma:
-            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.first_session, row.last_session, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_norma, 2)))
+    for index, row in tops_table[tops_table['period_number'] == 
+                                 tops_table['period_number'].max()].iterrows():
+        if (row.period_begin + timedelta(days=1)) != END_DATE:
+            f.write('Insufficient data for MCID candidates evaluation')
+            break
+        elif row.kpi_value == row.kpi_norma:
+            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_norma, 2)))
         else:
-            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.first_session, row.last_session, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
+            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
         f.write('\n\n')
         
+if len(tops_table) == 0:
+    with open('cache_log.txt', 'w', encoding='utf-8') as f:
+        f.write('Results with specs: \n')
+        f.write( 
+          'Acc_id: {0} \n B_date: {1} \n E_date: {2} \n lq: {3} \n rq: {4} \n anomaly_border: {5} \n\n'.format(
+              ACCOUNT_ID,  
+              BEG_DATE,
+              END_DATE,
+              LQ,
+              RQ,
+              anomaly_border))
+        f.write('Insufficient data for MCID candidates evaluation')
+
 # timestamp
 print('Core procession is finished...')
 TIME_END = time.time()
