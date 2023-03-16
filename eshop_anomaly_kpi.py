@@ -402,28 +402,30 @@ for sess in data_tables_an_found:
 
         category_slice = combs[combs.source == sou]
         norm = norms[norms.source == sou]
+        
+        if (len(category_slice[category_slice.length > 10]) >= 3):
+            for i in range(0, len(kpi)):
+                val = kpi[i]
+                if val == 'bounce_rate':
+                    cut = category_slice.sort_values(val, ascending=True).head(1)
+                else:
+                    cut = category_slice.sort_values(val, ascending=False).head(1)
+                cut['target_kpi'] = val
+                cut['kpi_value'] = cut[val]
+                cut['kpi_norma'] = norm[val].iloc[0]
+                cut['kpi_delta'] = (cut[val] - norm[val].iloc[0]) / norm[val].iloc[0] * 100
 
-        for i in range(0, len(kpi)):
-            val = kpi[i]
-            if val == 'bounce_rate':
-                cut = category_slice.sort_values(val, ascending=True).head(1)
-            else:
-                cut = category_slice.sort_values(val, ascending=False).head(1)
-            cut['target_kpi'] = val
-            cut['kpi_value'] = cut[val]
-            cut['kpi_norma'] = norm[val].iloc[0]
-            cut['kpi_delta'] = (cut[val] - norm[val].iloc[0]) / norm[val].iloc[0] * 100
-            
-            tops = tops.append(cut)
+                tops = tops.append(cut)
     
-    tops = tops.reset_index(drop=True)
-    tops['period_number'] = period_number
-    tops['first_session'] = sess['session_start'].min()
-    tops['last_session'] = sess['session_start'].max()
-    tops['period_begin'] = sess['period_begin'].max()
-    tops['period_end'] = sess['period_end'].max()
-    tops['overall_begin'] = BEG_DATE
-    tops['overall_end'] = END_DATE
+    if tops.empty != 0:
+        tops = tops.reset_index(drop=True)
+        tops['period_number'] = period_number
+        tops['first_session'] = sess['session_start'].min()
+        tops['last_session'] = sess['session_start'].max()
+        tops['period_begin'] = sess['period_begin'].max()
+        tops['period_end'] = sess['period_end'].max()
+        tops['overall_begin'] = BEG_DATE
+        tops['overall_end'] = END_DATE
     tops_table = tops_table.append(tops)
     
     pbar.update(1)
@@ -452,28 +454,37 @@ if to_sql == True:
 # tops_table['last_session_date'] = tops_table['last_session'].apply(lambda x: x.date())
 # tops_table['last_session_date'] = tops_table['last_session'].max()
 
-with open('cache_log.txt', 'w', encoding='utf-8') as f:
-    f.write('Results with specs: \n')
-    f.write( 
-      'Acc_id: {0} \n B_date: {1} \n E_date: {2} \n lq: {3} \n rq: {4} \n anomaly_border: {5} \n\n'.format(
-          ACCOUNT_ID,  
-          BEG_DATE,
-          END_DATE,
-          LQ,
-          RQ,
-          anomaly_border))
-    for index, row in tops_table[tops_table['period_number'] == 
-                                 tops_table['period_number'].max()].iterrows():
-        if (row.period_begin + timedelta(days=1)) != END_DATE:
-            f.write('Insufficient data for MCID candidates evaluation')
-            break
-        elif row.kpi_value == row.kpi_norma:
-            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_norma, 2)))
-        else:
-            f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
-        f.write('\n\n')
+if tops_table.empty != 0:
+    with open('cache_log.txt', 'w', encoding='utf-8') as f:
+        f.write('Results with specs: \n')
+        f.write( 
+          'Acc_id: {0} \n B_date: {1} \n E_date: {2} \n lq: {3} \n rq: {4} \n anomaly_border: {5} \n\n'.format(
+              ACCOUNT_ID,  
+              BEG_DATE,
+              END_DATE,
+              LQ,
+              RQ,
+              anomaly_border))
+        for index, row in tops_table[tops_table['period_number'] == 
+                                     tops_table['period_number'].max()].iterrows():
+            if (row.period_begin + timedelta(days=1)) != END_DATE:
+                f.write('Insufficient data for MCID candidates evaluation')
+                break
+            elif row.kpi_value == row.kpi_norma:
+                f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_norma, 2)))
+            else:
+                f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
+            f.write('\n\n')
+
+# with open('cache_log_month.txt', 'w', encoding='utf-8') as f:   
+#     for index, row in tops_table.iterrows():
+#         if row.kpi_value == row.kpi_norma:
+#             f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_norma, 2)))
+#         else:
+#             f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
+#         f.write('\n\n')
         
-if len(tops_table) == 0:
+if tops_table.empty:
     with open('cache_log.txt', 'w', encoding='utf-8') as f:
         f.write('Results with specs: \n')
         f.write( 
