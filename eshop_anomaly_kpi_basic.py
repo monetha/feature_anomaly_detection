@@ -346,9 +346,9 @@ with open('cache_log.txt', 'w', encoding='utf-8') as f:
             f.write('- {0} % sessions with this source \n\n'.format(round(len(session_slice) / lenq * 100), 2))
             for index, row in category_slice.iterrows():
                     f.write('-- had {0}% traffic coming from {1}, {2} coming from {3}, {4} \n with target_kpi {5} \n'.format(round(row['length'] / len(session_slice) * 100, 2), row.medium, row.campaign, row.ipcountry, row.device_type, row.target_kpi))
-                    f.write('--- bounce_rate is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2)))
-                    f.write('--- med_duration is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2)))
-                    f.write('--- conversion_rate is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2)))
+                    f.write('--- bounce_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2), round(row['bounce_rate'], 2)))
+                    f.write('--- med_duration ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2), round(row['med_duration'], 2)))
+                    f.write('--- conversion_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2), round(row['conversion_rate'], 2)))
                     f.write('\n')
         
         f.write('Worst performing traffic \n\n')
@@ -360,9 +360,9 @@ with open('cache_log.txt', 'w', encoding='utf-8') as f:
             f.write('- {0} % sessions with this source \n\n'.format(round(len(session_slice) / lenq * 100), 2))
             for index, row in category_slice.iterrows():
                     f.write('-- had {0}% traffic coming from {1}, {2} coming from {3}, {4} \n with target_kpi {5} \n'.format(round(row['length'] / len(session_slice) * 100, 2), row.medium, row.campaign, row.ipcountry, row.device_type, row.target_kpi))
-                    f.write('--- bounce_rate is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2)))
-                    f.write('--- med_duration is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2)))
-                    f.write('--- conversion_rate is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2)))
+                    f.write('--- bounce_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2), round(row['bounce_rate'], 2)))
+                    f.write('--- med_duration ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2), round(row['med_duration'], 2)))
+                    f.write('--- conversion_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2), round(row['conversion_rate'], 2)))
                     f.write('\n')
 
 
