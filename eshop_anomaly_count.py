@@ -275,7 +275,7 @@ print('Feature procession done...')
 TIME_END = time.time()
 print('Time spent: ', TIME_END - TIME)
 #-----------------------------------
-
+# this part will do as slow as big of a dataset and its chunks you get
 query_sessions = f'''
     select 
     id as beh_id,
@@ -379,6 +379,7 @@ print('Cor procession begin...')
 TIME_END = time.time()
 print('Time spent: ', TIME_END - TIME)
 
+# create corr matrix
 dfc = []
 for i in data1:
     assc = nominal.associations(i, compute_only=True, nom_nom_assoc='cramer', num_num_assoc='pearson', nom_num_assoc='correlation_ratio', mark_columns=True)
@@ -389,6 +390,7 @@ print('Cor procession done...')
 TIME_END = time.time()
 print('Time spent: ', TIME_END - TIME)
     
+# create dummy - shape for feature-feature corrs
 def create_lofl(x, y, n=[]):
     lofl = []
     for i in range(y):
@@ -423,6 +425,7 @@ anlist = copy.deepcopy(dum_list)
 listsc = copy.deepcopy(lists)
 qlistc = copy.deepcopy(qlists)
 
+# for values out of quantile range
 for i in range(l):
         for j in range(l):
             it = 0
