@@ -303,18 +303,18 @@ for sou in norms.source:
             tops = tops.append(cut2)
 
 # print(len(tops))
-try:
-    if len(tops) != 0:
-        tops = tops.reset_index(drop=True)
-        tops['first_session'] = sess['session_start'].min()
-        tops['last_session'] = sess['session_start'].max()
-        tops['period_begin'] = sess['period_begin'].max()
-        tops['period_end'] = sess['period_end'].max()
-        tops['overall_begin'] = BEG_DATE
-        tops['overall_end'] = END_DATE
-except:
-    print('__getitem__ problem has occured. currently working on it \n Results should be pretty normal though \n')
-    tops = tops.reset_index(drop=True)
+# try:
+#     if len(tops) != 0:
+#         tops = tops.reset_index(drop=True)
+#         tops['first_session'] = sess['session_start'].min()
+#         tops['last_session'] = sess['session_start'].max()
+#         tops['period_begin'] = sess['period_begin'].max()
+#         tops['period_end'] = sess['period_end'].max()
+#         tops['overall_begin'] = BEG_DATE
+#         tops['overall_end'] = END_DATE
+# except:
+#     print('__getitem__ problem has occured. currently working on it \n Results should be pretty normal though \n')
+#     tops = tops.reset_index(drop=True)
 tops_table = tops_table.append(tops)
 
 tops_table = tops_table.reset_index(drop=True)
@@ -339,17 +339,20 @@ with open('cache_log.txt', 'w', encoding='utf-8') as f:
     else:
         f.write('Best performing traffic \n\n')
         for sou in tops_table.source.unique():
-            session_slice = sess[sess.source == sou]
+            session_slice = sess[sess.source == sou] 
             category_slice = tops_table[(tops_table.source == sou) & (tops_table.is_best == 1)]
             norm = norms[norms.source == sou]
             f.write('- {0} \n'.format(sou))
             f.write('- {0} % sessions with this source \n\n'.format(round(len(session_slice) / lenq * 100), 2))
-            for index, row in category_slice.iterrows():
-                    f.write('-- had {0}% traffic coming from {1}, {2} coming from {3}, {4} \n with target_kpi {5} \n'.format(round(row['length'] / len(session_slice) * 100, 2), row.medium, row.campaign, row.ipcountry, row.device_type, row.target_kpi))
-                    f.write('--- bounce_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2), round(row['bounce_rate'], 2)))
-                    f.write('--- med_duration ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2), round(row['med_duration'], 2)))
-                    f.write('--- conversion_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2), round(row['conversion_rate'], 2)))
-                    f.write('\n')
+            for kpi_value in kpi:
+                category_slice_kpi = category_slice[category_slice.target_kpi == kpi_value]
+                f.write('-- top by {0} \n\n'.format(kpi_value))
+                for index, row in category_slice_kpi.iterrows():
+                        f.write('-- had {0}% traffic coming from {1}, {2} coming from {3}, {4} \n'.format(round(row['length'] / len(session_slice) * 100, 2), row.medium, row.campaign, row.ipcountry, row.device_type))
+                        f.write('--- bounce_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2), round(row['bounce_rate'], 2)))
+                        f.write('--- med_duration ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2), round(row['med_duration'], 2)))
+                        f.write('--- conversion_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2), round(row['conversion_rate'], 2)))
+                        f.write('\n')
         
         f.write('Worst performing traffic \n\n')
         for sou in tops_table.source.unique():
@@ -358,12 +361,15 @@ with open('cache_log.txt', 'w', encoding='utf-8') as f:
             norm = norms[norms.source == sou]
             f.write('- {0} \n'.format(sou))
             f.write('- {0} % sessions with this source \n\n'.format(round(len(session_slice) / lenq * 100), 2))
-            for index, row in category_slice.iterrows():
-                    f.write('-- had {0}% traffic coming from {1}, {2} coming from {3}, {4} \n with target_kpi {5} \n'.format(round(row['length'] / len(session_slice) * 100, 2), row.medium, row.campaign, row.ipcountry, row.device_type, row.target_kpi))
-                    f.write('--- bounce_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2), round(row['bounce_rate'], 2)))
-                    f.write('--- med_duration ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2), round(row['med_duration'], 2)))
-                    f.write('--- conversion_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2), round(row['conversion_rate'], 2)))
-                    f.write('\n')
+            for kpi_value in kpi:
+                category_slice_kpi = category_slice[category_slice.target_kpi == kpi_value]
+                f.write('-- top by {0} \n\n'.format(kpi_value))
+                for index, row in category_slice_kpi.iterrows():
+                        f.write('-- had {0}% traffic coming from {1}, {2} coming from {3}, {4} \n'.format(round(row['length'] / len(session_slice) * 100, 2), row.medium, row.campaign, row.ipcountry, row.device_type, row.target_kpi))
+                        f.write('--- bounce_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['bounce_rate'] - norm['bounce_rate'].iloc[0]) / norm['bounce_rate'].iloc[0] * 100, 2), round(norm['bounce_rate'].iloc[0], 2), round(row['bounce_rate'], 2)))
+                        f.write('--- med_duration ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['med_duration'] - norm['med_duration'].iloc[0]) / norm['med_duration'].iloc[0] * 100, 2), round(norm['med_duration'].iloc[0], 2), round(row['med_duration'], 2)))
+                        f.write('--- conversion_rate ({2}) is {0} % diff from norm which is {1} \n'.format(round((row['conversion_rate'] - norm['conversion_rate'].iloc[0]) / norm['conversion_rate'].iloc[0] * 100, 2), round(norm['conversion_rate'].iloc[0], 2), round(row['conversion_rate'], 2)))
+                        f.write('\n')
 
 
         
