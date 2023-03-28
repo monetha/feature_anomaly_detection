@@ -45,33 +45,13 @@ import warnings
 warnings.filterwarnings("ignore")
 #-----------------------------------
 
-# def valid_date(s):
-#     try:
-#         return datetime.strptime(s, "%Y-%m-%d")
-#     except ValueError:
-#         msg = "not a valid date: {0!r}".format(s)
-#         raise argparse.ArgumentTypeError(msg)
-
 parser = argparse.ArgumentParser()
-# parser.add_argument('--account_id', type=int, required=True)
-# parser.add_argument('--slice', type=int, required=True)
-# parser.add_argument('--beg_date', type=str, required=True)
-# parser.add_argument('--end_date', type=str, required=True)
-# parser.add_argument('--lq', type=int, required=True)
-# parser.add_argument('--rq', type=int, required=True)
-# parser.add_argument('--to_sql', type=bool, required=False, default=False)
 parser.add_argument('--to_sql', action='store_true')
 parser.add_argument('--no_sql', dest='to_sql', action='store_false')
 parser.set_defaults(to_sql=False)
 args = parser.parse_args()
 args = parser.parse_args()
 
-# ACCOUNT_ID = args.account_id
-# SLICE = args.slice
-# BEG_DATE = args.beg_date
-# END_DATE = args.end_date
-# LQ = args.lq
-# RQ = args.rq
 to_sql = args.to_sql
 
 TIME = int(time.time())
@@ -92,6 +72,12 @@ print('Arguments accepted',
       '\nCurrent time: ', TIME)
 
 #-----------------------------------
+
+# Algorithm works in two steps:
+# the first one is to do feature procession and merge it to one dataframe.
+# its runtime highly depends on feature procession method
+# the second one is to divide dataset to chunks and do the count. 
+# its runtime highly depends on chunksize and so on
 
 host = os.getenv('EVENTS_DB_HOST')
 db = os.getenv('EVENTS_DB_NAME')
@@ -157,7 +143,7 @@ target = pd.Series(
 )
 
 # timestamp
-print('event_sliced - done...')
+print('event_sliced - begin...')
 TIME_END = time.time()
 print('Time spent: ', TIME_END - TIME)
 
@@ -275,6 +261,7 @@ print('Feature procession done...')
 TIME_END = time.time()
 print('Time spent: ', TIME_END - TIME)
 #-----------------------------------
+
 # this part will do as slow as big of a dataset and its chunks you get
 query_sessions = f'''
     select 

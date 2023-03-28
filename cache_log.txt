@@ -1,0 +1,260 @@
+Results with specs: 
+Acc_id: 467 
+ B_date: 2023-03-20 
+ E_date: 2023-03-27 
+ lq: 0.05 
+ rq: 0.95 
+ anomaly_border: 0 
+
+Sessions overall: 1210 
+
+Best performing traffic 
+
+- (direct) 
+- 20 % sessions with this source 
+
+-- top by bounce_rate 
+
+-- had 30.67% traffic coming from (none), (none) coming from LT, desktop 
+--- bounce_rate (0.4) is -28.91 % diff from norm which is 0.56 
+--- med_duration (111.41) is 366.39 % diff from norm which is 23.89 
+--- conversion_rate (0.01) is -53.42 % diff from norm which is 0.03 
+
+-- had 34.87% traffic coming from (none), (none) coming from LT, mobile 
+--- bounce_rate (0.52) is -7.29 % diff from norm which is 0.56 
+--- med_duration (27.25) is 14.08 % diff from norm which is 23.89 
+--- conversion_rate (0.04) is 22.89 % diff from norm which is 0.03 
+
+-- had 10.08% traffic coming from (none), (none) coming from RS, desktop 
+--- bounce_rate (0.62) is 11.84 % diff from norm which is 0.56 
+--- med_duration (138.66) is 480.46 % diff from norm which is 23.89 
+--- conversion_rate (0.12) is 325.0 % diff from norm which is 0.03 
+
+-- had 15.13% traffic coming from (none), (none) coming from US, desktop 
+--- bounce_rate (1.0) is 78.95 % diff from norm which is 0.56 
+--- med_duration (1.25) is -94.75 % diff from norm which is 23.89 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.03 
+
+-- top by conversion_rate 
+
+-- had 10.08% traffic coming from (none), (none) coming from RS, desktop 
+--- bounce_rate (0.62) is 11.84 % diff from norm which is 0.56 
+--- med_duration (138.66) is 480.46 % diff from norm which is 23.89 
+--- conversion_rate (0.12) is 325.0 % diff from norm which is 0.03 
+
+-- had 34.87% traffic coming from (none), (none) coming from LT, mobile 
+--- bounce_rate (0.52) is -7.29 % diff from norm which is 0.56 
+--- med_duration (27.25) is 14.08 % diff from norm which is 23.89 
+--- conversion_rate (0.04) is 22.89 % diff from norm which is 0.03 
+
+-- had 30.67% traffic coming from (none), (none) coming from LT, desktop 
+--- bounce_rate (0.4) is -28.91 % diff from norm which is 0.56 
+--- med_duration (111.41) is 366.39 % diff from norm which is 23.89 
+--- conversion_rate (0.01) is -53.42 % diff from norm which is 0.03 
+
+-- had 15.13% traffic coming from (none), (none) coming from US, desktop 
+--- bounce_rate (1.0) is 78.95 % diff from norm which is 0.56 
+--- med_duration (1.25) is -94.75 % diff from norm which is 23.89 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.03 
+
+-- top by med_duration 
+
+-- had 10.08% traffic coming from (none), (none) coming from RS, desktop 
+--- bounce_rate (0.62) is 11.84 % diff from norm which is 0.56 
+--- med_duration (138.66) is 480.46 % diff from norm which is 23.89 
+--- conversion_rate (0.12) is 325.0 % diff from norm which is 0.03 
+
+-- had 30.67% traffic coming from (none), (none) coming from LT, desktop 
+--- bounce_rate (0.4) is -28.91 % diff from norm which is 0.56 
+--- med_duration (111.41) is 366.39 % diff from norm which is 23.89 
+--- conversion_rate (0.01) is -53.42 % diff from norm which is 0.03 
+
+-- had 34.87% traffic coming from (none), (none) coming from LT, mobile 
+--- bounce_rate (0.52) is -7.29 % diff from norm which is 0.56 
+--- med_duration (27.25) is 14.08 % diff from norm which is 23.89 
+--- conversion_rate (0.04) is 22.89 % diff from norm which is 0.03 
+
+-- had 15.13% traffic coming from (none), (none) coming from US, desktop 
+--- bounce_rate (1.0) is 78.95 % diff from norm which is 0.56 
+--- med_duration (1.25) is -94.75 % diff from norm which is 23.89 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.03 
+
+- facebook.com 
+- 15 % sessions with this source 
+
+-- top by bounce_rate 
+
+-- had 14.2% traffic coming from referral, (none) coming from LT, desktop 
+--- bounce_rate (0.32) is -46.87 % diff from norm which is 0.6 
+--- med_duration (79.23) is 192.53 % diff from norm which is 27.08 
+--- conversion_rate (0.04) is 252.0 % diff from norm which is 0.01 
+
+-- had 60.23% traffic coming from referral, (none) coming from LT, mobile 
+--- bounce_rate (0.54) is -10.72 % diff from norm which is 0.6 
+--- med_duration (38.33) is 41.51 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 10.23% traffic coming from referral, (none) coming from US, desktop 
+--- bounce_rate (1.0) is 66.04 % diff from norm which is 0.6 
+--- med_duration (19.55) is -27.81 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- top by conversion_rate 
+
+-- had 14.2% traffic coming from referral, (none) coming from LT, desktop 
+--- bounce_rate (0.32) is -46.87 % diff from norm which is 0.6 
+--- med_duration (79.23) is 192.53 % diff from norm which is 27.08 
+--- conversion_rate (0.04) is 252.0 % diff from norm which is 0.01 
+
+-- had 60.23% traffic coming from referral, (none) coming from LT, mobile 
+--- bounce_rate (0.54) is -10.72 % diff from norm which is 0.6 
+--- med_duration (38.33) is 41.51 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 10.23% traffic coming from referral, (none) coming from US, desktop 
+--- bounce_rate (1.0) is 66.04 % diff from norm which is 0.6 
+--- med_duration (19.55) is -27.81 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- top by med_duration 
+
+-- had 14.2% traffic coming from referral, (none) coming from LT, desktop 
+--- bounce_rate (0.32) is -46.87 % diff from norm which is 0.6 
+--- med_duration (79.23) is 192.53 % diff from norm which is 27.08 
+--- conversion_rate (0.04) is 252.0 % diff from norm which is 0.01 
+
+-- had 60.23% traffic coming from referral, (none) coming from LT, mobile 
+--- bounce_rate (0.54) is -10.72 % diff from norm which is 0.6 
+--- med_duration (38.33) is 41.51 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 10.23% traffic coming from referral, (none) coming from US, desktop 
+--- bounce_rate (1.0) is 66.04 % diff from norm which is 0.6 
+--- med_duration (19.55) is -27.81 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+Worst performing traffic 
+
+- (direct) 
+- 20 % sessions with this source 
+
+-- top by bounce_rate 
+
+-- had 15.13% traffic coming from (none), (none) coming from US, desktop 
+--- bounce_rate (1.0) is 78.95 % diff from norm which is 0.56 
+--- med_duration (1.25) is -94.75 % diff from norm which is 23.89 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.03 
+
+-- had 10.08% traffic coming from (none), (none) coming from RS, desktop 
+--- bounce_rate (0.62) is 11.84 % diff from norm which is 0.56 
+--- med_duration (138.66) is 480.46 % diff from norm which is 23.89 
+--- conversion_rate (0.12) is 325.0 % diff from norm which is 0.03 
+
+-- had 34.87% traffic coming from (none), (none) coming from LT, mobile 
+--- bounce_rate (0.52) is -7.29 % diff from norm which is 0.56 
+--- med_duration (27.25) is 14.08 % diff from norm which is 23.89 
+--- conversion_rate (0.04) is 22.89 % diff from norm which is 0.03 
+
+-- had 30.67% traffic coming from (none), (none) coming from LT, desktop 
+--- bounce_rate (0.4) is -28.91 % diff from norm which is 0.56 
+--- med_duration (111.41) is 366.39 % diff from norm which is 23.89 
+--- conversion_rate (0.01) is -53.42 % diff from norm which is 0.03 
+
+-- top by conversion_rate 
+
+-- had 15.13% traffic coming from (none), (none) coming from US, desktop 
+--- bounce_rate (1.0) is 78.95 % diff from norm which is 0.56 
+--- med_duration (1.25) is -94.75 % diff from norm which is 23.89 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.03 
+
+-- had 30.67% traffic coming from (none), (none) coming from LT, desktop 
+--- bounce_rate (0.4) is -28.91 % diff from norm which is 0.56 
+--- med_duration (111.41) is 366.39 % diff from norm which is 23.89 
+--- conversion_rate (0.01) is -53.42 % diff from norm which is 0.03 
+
+-- had 34.87% traffic coming from (none), (none) coming from LT, mobile 
+--- bounce_rate (0.52) is -7.29 % diff from norm which is 0.56 
+--- med_duration (27.25) is 14.08 % diff from norm which is 23.89 
+--- conversion_rate (0.04) is 22.89 % diff from norm which is 0.03 
+
+-- had 10.08% traffic coming from (none), (none) coming from RS, desktop 
+--- bounce_rate (0.62) is 11.84 % diff from norm which is 0.56 
+--- med_duration (138.66) is 480.46 % diff from norm which is 23.89 
+--- conversion_rate (0.12) is 325.0 % diff from norm which is 0.03 
+
+-- top by med_duration 
+
+-- had 15.13% traffic coming from (none), (none) coming from US, desktop 
+--- bounce_rate (1.0) is 78.95 % diff from norm which is 0.56 
+--- med_duration (1.25) is -94.75 % diff from norm which is 23.89 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.03 
+
+-- had 34.87% traffic coming from (none), (none) coming from LT, mobile 
+--- bounce_rate (0.52) is -7.29 % diff from norm which is 0.56 
+--- med_duration (27.25) is 14.08 % diff from norm which is 23.89 
+--- conversion_rate (0.04) is 22.89 % diff from norm which is 0.03 
+
+-- had 30.67% traffic coming from (none), (none) coming from LT, desktop 
+--- bounce_rate (0.4) is -28.91 % diff from norm which is 0.56 
+--- med_duration (111.41) is 366.39 % diff from norm which is 23.89 
+--- conversion_rate (0.01) is -53.42 % diff from norm which is 0.03 
+
+-- had 10.08% traffic coming from (none), (none) coming from RS, desktop 
+--- bounce_rate (0.62) is 11.84 % diff from norm which is 0.56 
+--- med_duration (138.66) is 480.46 % diff from norm which is 23.89 
+--- conversion_rate (0.12) is 325.0 % diff from norm which is 0.03 
+
+- facebook.com 
+- 15 % sessions with this source 
+
+-- top by bounce_rate 
+
+-- had 10.23% traffic coming from referral, (none) coming from US, desktop 
+--- bounce_rate (1.0) is 66.04 % diff from norm which is 0.6 
+--- med_duration (19.55) is -27.81 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 60.23% traffic coming from referral, (none) coming from LT, mobile 
+--- bounce_rate (0.54) is -10.72 % diff from norm which is 0.6 
+--- med_duration (38.33) is 41.51 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 14.2% traffic coming from referral, (none) coming from LT, desktop 
+--- bounce_rate (0.32) is -46.87 % diff from norm which is 0.6 
+--- med_duration (79.23) is 192.53 % diff from norm which is 27.08 
+--- conversion_rate (0.04) is 252.0 % diff from norm which is 0.01 
+
+-- top by conversion_rate 
+
+-- had 60.23% traffic coming from referral, (none) coming from LT, mobile 
+--- bounce_rate (0.54) is -10.72 % diff from norm which is 0.6 
+--- med_duration (38.33) is 41.51 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 10.23% traffic coming from referral, (none) coming from US, desktop 
+--- bounce_rate (1.0) is 66.04 % diff from norm which is 0.6 
+--- med_duration (19.55) is -27.81 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 14.2% traffic coming from referral, (none) coming from LT, desktop 
+--- bounce_rate (0.32) is -46.87 % diff from norm which is 0.6 
+--- med_duration (79.23) is 192.53 % diff from norm which is 27.08 
+--- conversion_rate (0.04) is 252.0 % diff from norm which is 0.01 
+
+-- top by med_duration 
+
+-- had 10.23% traffic coming from referral, (none) coming from US, desktop 
+--- bounce_rate (1.0) is 66.04 % diff from norm which is 0.6 
+--- med_duration (19.55) is -27.81 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 60.23% traffic coming from referral, (none) coming from LT, mobile 
+--- bounce_rate (0.54) is -10.72 % diff from norm which is 0.6 
+--- med_duration (38.33) is 41.51 % diff from norm which is 27.08 
+--- conversion_rate (0.0) is -100.0 % diff from norm which is 0.01 
+
+-- had 14.2% traffic coming from referral, (none) coming from LT, desktop 
+--- bounce_rate (0.32) is -46.87 % diff from norm which is 0.6 
+--- med_duration (79.23) is 192.53 % diff from norm which is 27.08 
+--- conversion_rate (0.04) is 252.0 % diff from norm which is 0.01 
+

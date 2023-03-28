@@ -475,14 +475,6 @@ if tops_table.empty != 0:
             else:
                 f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
             f.write('\n\n')
-
-# with open('cache_log_month.txt', 'w', encoding='utf-8') as f:   
-#     for index, row in tops_table.iterrows():
-#         if row.kpi_value == row.kpi_norma:
-#             f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9} and was equal to normal value in this period {10}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_norma, 2)))
-#         else:
-#             f.write('It was detected that for {0} sessions from {1} to {2} which originate from {3} and have the following MCID: {4}, {5}, {6}, {7}, the {8} was {9}, which is {10} percent different than normal value in this period {11}.'.format(int(row['length']), row.period_begin, row.period_end, row.source, row.medium, row.campaign, row.ipcountry, row.device_family, row.target_kpi, round(row.kpi_value, 2), round(row.kpi_delta, 2), round(row.kpi_norma, 2)))
-#         f.write('\n\n')
         
 if tops_table.empty:
     with open('cache_log.txt', 'w', encoding='utf-8') as f:
